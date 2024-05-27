@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScarTune</title>
+    <style>
+body,html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../static/background.jpg"); /* Path to your background image */
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    font-size:25px;
+}
+
+nav {
+    overflow: hidden;
+    font-family: system-ui;
+    padding-left: 20px;
+    padding-right: 20px; /* Added padding-right to create space around links */
+    position: fixed;
+    height: 1.7em;
+    width: 100%;
+    top: 0;
+    font-size: 25px;
+    z-index: 2; /* Ensure navbar appears above background image */
+    display: flex;
+    justify-content: space-between; /* Equal space between navbar links */
+    align-items: center; /* Center vertically */
+}
+
+nav a {
+    text-decoration: none;
+    padding: 0 10px; /* Adjust padding to create space around links */
+    color: black; /* Set default link color */
+}
+
+nav a:hover {
+    color: #399c87; /* Change link color on hover */
+}
+
+#content{
+    h2{font-size:35px; }
+    display: block;
+    width: 50%;
+    height: 40%;
+    font-size: 22px;
+    margin-bottom: 15em;
+    margin-right: 30em;
+}
+    </style>
+</head>
+<nav >
+    <div>
+        <a href="/.">ScarTune</a>
+        <a href="/KnowYourScar">KnowYourScar</a>
+        <a href="/about">About</a>
+    </div>
+</nav>
+<body>
+    <div id="content">
+        <h2>Welcome to Scar Tune!</h2>
+        Scar Tune is an innovative project developed by Aayush Dhoundiyal, Tanishq Gupta, and Aditya Sahai, as their final year project. At Scar Tune, we leverage cutting-edge technology to detect scars using images from our carefully curated dataset. <br><br>
+        Our mission is to provide a reliable and efficient solution for scar detection, empowering individuals to better understand and manage their skin health. With Scar Tune, you can gain valuable insights into the presence and characteristics of scars, aiding in early detection and treatment.<br><br>
+        Backed by rigorous research and development, Scar Tune employs advanced algorithms to analyze images and accurately identify scars, delivering results with precision and speed. Whether you're a healthcare professional, researcher, or someone curious about your skin's condition, Scar Tune offers a user-friendly platform for scar assessment.<br><br>
+        Join us on this journey to revolutionize scar detection and enhance skin wellness. Experience the power of technology combined with human ingenuity at Scar Tune.
+    </div>
+</body>
+</html>

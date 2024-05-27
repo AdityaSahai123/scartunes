@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScarTune</title>
+    <style>
+        body,html {
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url(../static/background.jpg);
+            background-size: cover;
+            background-position: bottom;
+            background-repeat: no-repeat;
+            width: 100vw;
+<!--            margin: auto;-->
+        }
+
+        nav {
+            overflow: hidden;
+            font-family: system-ui;
+            padding-left: 20px;
+            padding-right: 20px; /* Added padding-right to create space around links */
+            position: fixed;
+            height: 1.7em;
+            width: 100%;
+            top: 0;
+            font-size: 25px;
+            z-index: 2; /* Ensure navbar appears above background image */
+            display: flex;
+            justify-content: space-between; /* Equal space between navbar links */
+            align-items: center; /* Center vertically */
+        }
+
+        nav a {
+            text-decoration: none;
+            padding: 0 10px; /* Adjust padding to create space around links */
+            color: black; /* Set default link color */
+        }
+
+        nav a:hover {
+            color:#399c87; /* Change link color on hover */
+        }
+
+        #content {
+            display: flex;
+            width: 100%;
+            justify-content: space-evenly;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        #drop-area,
+        #preview {
+            padding: 20px;
+        }
+
+        #drop-area {
+            border: 2px dashed rgb(0, 0, 0);
+            border-radius: 10px;
+            /* margin-right: 10px; */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-size:25px;
+        }
+
+        #drop-area h3 {
+            margin-bottom: 10px;
+        }
+
+        
+        #preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #preview img {
+            max-width: 100%; /* Ensure the image fits within the container */
+        }
+
+        #result {
+            width: 50%; /* Each section takes half of the available width */
+            padding: 20px;
+            font-size:22px;
+        }
+
+        #result h2 {
+            text-align: center;
+        }
+
+        #result p {
+            text-align: center;
+        }
+
+        #upload-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #upload-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<nav >
+    <div>
+        <a href="/.">ScarTune</a>
+        <a href="/KnowYourScar">KnowYourScar</a>
+        <a href="/about">About</a>
+    </div>
+</nav>
+<div id="content">
+    <div id="drop-area">
+        <h3>Drag & Drop Image Here</h3>
+        <p>or</p>
+        <input type="file" id="file-input" accept="image/jpeg" style="display:none">
+        <button id="upload-button">Upload Image</button>
+        <p style="font-size: 17px; color: #666;">(Image should be in JPEG format and size 224x224 pixels)</p>
+    </div>
+    <div class="sdf">
+        <div id="preview">
+            <img id="preview-img" src="#" alt="Preview">
+        </div>
+
+        <div id="result">
+            <h2 id="prediction-heading">Prediction Result:</h2>
+            <p id="prediction-text"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('file-input');
+    const preview = document.getElementById('preview');
+    const previewImg = document.getElementById('preview-img');
+    const predictionText = document.getElementById('prediction-text');
+    const uploadButton = document.getElementById('upload-button');
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight() {
+        dropArea.classList.add('highlight');
+    }
+
+    function unhighlight() {
+        dropArea.classList.remove('highlight');
+    }
+
+    dropArea.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+
+        handleFiles(files);
+    }
+
+    fileInput.addEventListener('change', function() {
+        handleFiles(this.files);
+    });
+
+    // Trigger file input click when the "Upload Image" button is clicked
+    uploadButton.addEventListener('click', function() {
+        fileInput.click();
+    });
+
+    function handleFiles(files) {
+        const file = files[0];
+        if (file.type !== 'image/jpeg') {
+            alert('Please upload a JPEG image file.');
+            return;
+        }
+
+        const img = new Image();
+        img.onload = function() {
+            if (img.width !== 224 || img.height !== 224) {
+                alert('Image dimensions must be 224x224 pixels.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function() {
+                previewImg.src = reader.result;
+                preview.style.display = 'block';
+                sendImage(file);
+            }
+        };
+        img.src = URL.createObjectURL(file);
+    }
+
+    function sendImage(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        fetch('/predict', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            updatePrediction(data.prediction);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function updatePrediction(prediction) {
+        predictionText.textContent = prediction;
+    }
+
+    // Function to hide preview section if no image is uploaded
+    function hidePreview() {
+        preview.style.display = 'none';
+    }
+
+    // Initially hide the preview section
+    hidePreview();
+</script>
+</body>
+</html>

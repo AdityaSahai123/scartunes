@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScarTune</title>
+    <style>
+    *{
+    margin:0;
+    padding:0;
+    }
+
+    body{
+             margin: 0;
+            padding: 0;
+            height: 100%;
+            background-image: url("../static/background.jpg"); /* Path to your background image */
+            background-size: cover;
+            background-position: bottom;
+            background-repeat: no-repeat;
+    }
+
+.main{
+                margin: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+nav {
+    overflow: hidden;
+    font-family: system-ui;
+    padding-left: 20px;
+    padding-right: 20px; /* Added padding-right to create space around links */
+    position: fixed;
+    height: 1.7em;
+    width: 100%;
+    top: 0;
+    font-size: 25px;
+    z-index: 2; /* Ensure navbar appears above background image */
+    display: flex;
+    justify-content: space-between; /* Equal space between navbar links */
+    align-items: center; /* Center vertically */
+}
+
+nav a {
+    text-decoration: none;
+    padding: 0 10px; /* Adjust padding to create space around links */
+    color: black; /* Set default link color */
+}
+
+nav a:hover {
+    color: #399c87; /* Change link color on hover */
+}
+
+.heading {
+        width: 15em;
+    font-size: 30px;
+    text-align: center;
+    color: #399c87;
+    /* margin-right: 50%; */
+    font-style: italic;
+    z-index: 1;
+}
+
+.container {
+        display: block;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    top: 25%;
+}
+
+.scar-window {
+    position: relative;
+    width: 40em; /* Adjust as needed */
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin-top:20%;
+    margin-left:15%;
+}
+
+.scar-type {
+    display: none;
+    font-size:20px;
+        margin: 0 30px;
+}
+
+.scar-type.active {
+    display: block;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding:10px;
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
+    </style>
+</head>
+
+<body>
+<nav >
+    <div>
+        <a href="/.">ScarTune</a>
+        <a href="/KnowYourScar">KnowYourScar</a>
+        <a href="/about" >About</a>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="heading">
+        <h1>ScarTune: An Effective<br>Approach for Scar Care</h1>
+    </div>
+    <div class="container">
+        <div class="scar-window">
+            <button class="arrow prev" onclick="showPrev()">◄</button>
+            <div class="scar-type active" id="normal-fine-line">
+                <h2>Normal Fine Line Scars</h2>
+                <p>These scars are the most common and typically result from minor injuries or surgical procedures. They appear as thin, flat lines that closely resemble the surrounding skin texture. While they may fade over time, they often remain visible, serving as subtle reminders of past experiences.</p>
+            </div>
+            <div class="scar-type" id="contracture">
+                <h2> Contracture Scars</h2>
+            <p>Contractures are scars that result in the tightening or shortening of skin, muscles, or other tissues in the body.
+They often occur after severe burns or deep tissue injuries, where the skin and underlying tissues heal in a way that restricts movement and flexibility.
+Contractures can lead to significant functional impairment, affecting mobility and range of motion in the affected area.
+Physical therapy, splinting, and surgical intervention may be necessary to improve function and prevent further complications associated with contractures.</p>
+            </div>
+            <div class="scar-type" id="hypertrophic">
+                <h2>Hypertrophic Scars</h2>
+                <p>Hypertrophic scars, also known as hypertrophic scars, are characterized by their raised, thickened appearance.
+They develop when the body produces an excess of collagen during the healing process, leading to a buildup of tissue at the injury site.
+While hypertrophic scars may initially appear red or pink, they can gradually fade to a lighter color over time.
+Unlike keloid scars, which extend beyond the boundaries of the original injury, hypertrophic scars typically do not exceed the initial wound site.
+Hypertrophic scars can be itchy, painful, or tender to the touch, and may cause cosmetic concerns for some individuals.</p>
+            </div>
+            <div class="scar-type" id="keloid">
+                <h2>Keloid Scars</h2>
+                <p>Keloid scars are a type of abnormal scar formation that extends beyond the boundaries of the original injury. They often appear as raised, shiny nodules and can continue to grow over time. Keloids are more common in individuals with darker skin tones and may develop spontaneously or in response to minor trauma. Unlike hypertrophic scars, keloids do not regress and may require specialized treatment to manage their growth and symptoms.</p>
+            </div>
+            <div class="scar-type" id="pitted">
+                <h2>Pitted Scars</h2>
+                <p> Pitted scars, also known as atrophic scars, result from a loss of underlying tissue during the healing process. They are commonly associated with conditions such as severe acne, chickenpox, or certain skin infections. Pitted scars appear as indentations or depressions in the skin and can vary in size and depth. While they may improve with time, pitted scars often persist and can have a significant impact on self-esteem and confidence.</p>
+            </div>
+            <button class="arrow next" onclick="showNext()">►</button>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+   let currentScarIndex = 0;
+const scarTypes = document.querySelectorAll('.scar-type');
+
+function showScar(index) {
+    scarTypes.forEach((scar, i) => {
+        if (i === index) {
+            scar.classList.add('active');
+        } else {
+            scar.classList.remove('active');
+        }
+    });
+}
+
+function showNext() {
+    currentScarIndex++;
+    if (currentScarIndex >= scarTypes.length) {
+        currentScarIndex = 0;
+    }
+    showScar(currentScarIndex);
+}
+
+function showPrev() {
+    currentScarIndex--;
+    if (currentScarIndex < 0) {
+        currentScarIndex = scarTypes.length - 1;
+    }
+    showScar(currentScarIndex);
+}
+
+</script>
+</html>
