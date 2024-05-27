@@ -165,7 +165,6 @@ pytz==2022.1
 pytz-deprecation-shim==0.1.0.post0
 PyYAML==6.0
 pyzmq==23.1.0
-pyzstd==0.15.8
 qtconsole==5.3.1
 QtPy==2.1.0
 regex==2022.10.31
